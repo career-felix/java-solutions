@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -31,12 +33,23 @@ public class CombinationSumEqualsTargetTest {
 		log.info("------------");
 	}
 
+	private void checkResult(int target, List<List<Integer>> result) {
+		for (int i = 0; i < result.size(); i++) {
+			List<Integer> combination = result.get(i);
+			Assertions.assertEquals(target, combination.stream().collect(Collectors.summingInt(ele -> ele)));
+			for (int k = i + 1; k < result.size(); k++) {
+				Assertions.assertNotEquals(combination, result.get(k));
+			}
+		}
+	}
+
 	@Test
 	public void _01() {
 		int target = 20;
 		NavigableSet<Integer> candidates = new TreeSet<>(Arrays.asList(1));
 		List<List<Integer>> list = solution.solution(target, candidates);
 		list.stream().forEach(combination -> log.info("{}", combination));
+		checkResult(target, list);
 	}
 
 	@Test
@@ -46,6 +59,7 @@ public class CombinationSumEqualsTargetTest {
 		List<List<Integer>> list = solution.solution(target, candidates);
 		final AtomicInteger index = new AtomicInteger(0);
 		list.stream().forEach(combination -> log.info("{} - {}", index.getAndIncrement(), combination));
+		checkResult(target, list);
 	}
 
 	@Test
@@ -55,5 +69,6 @@ public class CombinationSumEqualsTargetTest {
 		List<List<Integer>> list = solution.solution(target, candidates);
 		final AtomicInteger index = new AtomicInteger(0);
 		list.stream().forEach(combination -> log.info("{} - {}", index.getAndIncrement(), combination));
+		checkResult(target, list);
 	}
 }
