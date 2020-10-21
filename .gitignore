@@ -1,0 +1,11 @@
+target
+.idea
+logs
+.classpath
+.factorypath
+.project
+.settings
+.dbeaver
+*.iml
+dependency-reduced-pom.xml
+pom.xml.versionsBackup
