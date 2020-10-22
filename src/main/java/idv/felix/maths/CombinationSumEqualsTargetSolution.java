@@ -14,13 +14,13 @@ public class CombinationSumEqualsTargetSolution implements CombinationSumEqualsT
 	@Override
 	public List<List<Integer>> solution(int target, NavigableSet<Integer> candidates) {
 
+		// remove ZERO and NEGATIVE
+		candidates.removeIf(ele -> ele <= 0);
+
 		// check NULL
 		if (candidates == null || candidates.size() == 0) {
 			return null;
 		}
-
-		// remove ZERO
-		candidates.removeIf(ele -> ele == 0);
 
 		/** START */
 		final int first = candidates.first();
