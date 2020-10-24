@@ -11,38 +11,41 @@ public class MedianOfTwoSortedArraysSolution implements MedianOfTwoSortedArrays 
 	 */
 	@Override
 	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-		int n = nums1.length;
-		int m = nums2.length;
+		int nShort = nums1.length;
+		int nLong = nums2.length;
 
 		int[] temp;
-		if (n > m) {
+		if (nShort > nLong) {
 			temp = nums1;
 			nums1 = nums2;
 			nums2 = temp;
-			n = nums1.length;
-			m = nums2.length;
+			nShort = nums1.length;
+			nLong = nums2.length;
 		}
 
-		return binarySearchMedian(nums1, nums2, 0, n);
+		return binarySearchMedian(nums1, nums2, 0, nShort);
 	}
 
 	private double binarySearchMedian(int[] A, int[] B, int low, int high) {
 		int i = (low + high) / 2;
-		int j = (A.length + B.length) / 2 - i;
-		int la = i == 0 ? Integer.MIN_VALUE : A[i - 1];
-		int lb = j == 0 ? Integer.MIN_VALUE : B[j - 1];
-		int ra = i == A.length ? Integer.MAX_VALUE : A[i];
-		int rb = j == B.length ? Integer.MAX_VALUE : B[j];
+		int k = (A.length + B.length) / 2 - i;
+
+		int aLeft = i == 0 ? Integer.MIN_VALUE : A[i - 1];
+		int aRight = i == A.length ? Integer.MAX_VALUE : A[i];
+
+		int bLeft = k == 0 ? Integer.MIN_VALUE : B[k - 1];
+		int bRight = k == B.length ? Integer.MAX_VALUE : B[k];
+
 		int totalLength = A.length + B.length;
-		if (la <= rb && lb <= ra) {
+		if (aLeft <= bRight && bLeft <= aRight) {
 			if (totalLength % 2 == 0) {
-				return (Math.max(la, lb) + Math.min(ra, rb)) / 2;
+				return (Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2;
 			} else {
-				return Math.min(ra, rb);
+				return Math.min(aRight, bRight);
 			}
-		} else if (la > rb) {
+		} else if (bRight < aLeft) {
 			return binarySearchMedian(A, B, low, i - 1);
-		} else {
+		} else /* if (aRight < bLeft) */ {
 			return binarySearchMedian(A, B, i + 1, high);
 		}
 	}
